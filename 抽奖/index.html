@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>抽奖</title>
+    <style>
+      body {
+        background-color: #333;
+      }
+      .box {
+        text-align: center;
+      }
+      .box #box {
+        width: 500px;
+        height: 500px;
+      }
+      .box button {
+        margin-top: 20px;
+        padding: 0.6em 2.5em;
+        font-size: 1em;
+        border-radius: 10px;
+        border-color: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        background: linear-gradient(#eee, #f50);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <div id="box"></div>
+      <div>
+        <button id="btnStart">抽奖</button>
+      </div>
+    </div>
+    <script type="module">
+      import Turntable from "./turntable.js"; //引用模块
+      window.onload = () => {
+        const t = new Turntable({
+          window,
+          elemId: "box",
+        });
+        //TODO: 最多7个
+        const resouce = [
+          
+          {
+            image: "./imges/tc.jpg",
+            title: "特等奖：汤臣一品一栋",
+          },
+          {
+            image: "./imges/R-C.jpg",
+            title: "一等奖：兰博基尼R-C",
+          },
+          {
+            image: "./imges/lv.avif",
+            title: "二等奖：路威包包10个",
+          },
+          {
+            image: "./imges/OIP-C.jpg",
+            title: "三等奖：iPhone全家桶",
+          },
+          {
+            image: "./imges/bx.jpg",
+            title: "四等奖：四开门冰箱",
+          },
+          {
+            image: "./imges/OIP-C (1).jpg",
+            title: "五等奖：100寸液晶电视",
+          },
+          {
+            image: "./imges/qian.webp",
+            title: "六等奖：倒欠小李一万元",
+          },
+        ];
+        //加载图片资源可能有延迟，通过异步处理
+        Promise.all(
+          resouce.map((item) => {
+            return new Promise((resolve, reject) => {
+              let img = new Image();
+              img.onload = () => {
+                item.image = img;
+                resolve(item);
+              };
+              img.onerror = reject;
+              img.src = item.image;
+            });
+          })
+        ).then((res) => {
+          t.draw({
+            // mode:1,
+            goods: res,
+          });
+        });
+        //设置按钮点击事件
+        document.getElementById("btnStart").onclick = () => {
+          t.onStart({
+            // index: 3,//抽奖概率自己写，传入预定奖品的index
+            success: (res) => {
+              // console.log('ok', res);
+              const good = res.goods[res.index];
+              if (good.title) {
+                if (good.title.indexOf("元") >= 0)
+                  alert(`🙂恭喜恭喜您!抽到奖品${good.title}.`);
+                else alert("🙆‍很遗憾!未中奖.");
+              } else {
+                alert(`🙂恭喜恭喜您!抽到奖品${res.index + 1}.`);
+              }
+            },
+          });
+        };
+      };
+    </script>
+  </body>
+</html>

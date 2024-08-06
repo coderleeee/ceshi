@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>请扫码</title>
+  <style>
+    body{
+      background-color: #333;
+    }
+    .box{
+      text-align: center;
+    }
+    .box #box{
+      width: 280px;
+      height: 280px;
+    }
+    .box button{
+      margin-top: 20px;
+      padding: 0.6em 2.5em;
+      font-size: 1em;
+      border-radius: 10px;
+      border-color: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      background: linear-gradient(#eee,#f50);
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div>请扫码</div>
+    <div id="qy-canvas"></div>
+  </div>
+  <script src="./code.js"></script>
+  <script>
+    var qyCanvas = document.getElementById('qy-canvas');
+    var qyCode = new QRCode(qyCanvas, "https://www.baidu.com");
+    qyCode.draw();
+  </script>
+
+</body>
+</html>
